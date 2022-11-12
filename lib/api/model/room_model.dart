@@ -4,6 +4,7 @@ class RoomModel {
   final String roomId;
   final String password;
   final String timeStamp;
+
   RoomModel({
     required this.roomId,
     required this.password,

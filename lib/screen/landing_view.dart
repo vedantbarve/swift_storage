@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:swift_storage/screen/room_view.dart';
 import 'package:uuid/uuid.dart';
-import '../api/room_controller.dart';
 import '../api/services/database.dart';
 import '../global/colors.dart';
 import '../global/navigation.dart';
 
 final _database = DataBaseController();
-final _roomCtr = Get.put(RoomController());
 
 class LandingView extends StatefulWidget {
   const LandingView({super.key});
@@ -47,15 +45,23 @@ class _LandingViewState extends State<LandingView> {
                         height: double.maxFinite,
                         width: double.maxFinite,
                         color: primary,
-                        child: const Center(
-                          child: Text(
-                            "Swift Storage",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontFamily: "Poppins",
-                              fontSize: 38,
-                              fontWeight: FontWeight.bold,
-                            ),
+                        child: Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Image.asset(
+                                "assets/cloud-computing 128px.png",
+                              ),
+                              const Text(
+                                "Swift Storage",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: "Poppins",
+                                  fontSize: 38,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -86,15 +92,23 @@ class _LandingViewState extends State<LandingView> {
                       height: 300,
                       width: double.maxFinite,
                       color: const Color(0xff41436A),
-                      child: const Center(
-                        child: Text(
-                          "Swift Storage",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: "Poppins",
-                            fontSize: 38,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      child: Center(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Image.asset(
+                              "assets/cloud-computing 128px.png",
+                            ),
+                            const Text(
+                              "Swift Storage",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: "Poppins",
+                                fontSize: 38,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -117,7 +131,7 @@ class _LandingViewState extends State<LandingView> {
   }
 }
 
-class FormWidget extends StatelessWidget {
+class FormWidget extends StatefulWidget {
   const FormWidget({
     Key? key,
     required GlobalKey<FormState> createRoomForm,
@@ -142,6 +156,13 @@ class FormWidget extends StatelessWidget {
   final TextEditingController _passwordJoinRoom;
 
   @override
+  State<FormWidget> createState() => _FormWidgetState();
+}
+
+class _FormWidgetState extends State<FormWidget> {
+  bool isVisibleJoin = true;
+  bool isVisibleCreate = true;
+  @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.max,
@@ -152,7 +173,7 @@ class FormWidget extends StatelessWidget {
             vertical: 28,
           ),
           child: Form(
-            key: _createRoomForm,
+            key: widget._createRoomForm,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -166,7 +187,7 @@ class FormWidget extends StatelessWidget {
                 ),
                 TextFormField(
                   enabled: false,
-                  controller: _roomIdCreateRoom,
+                  controller: widget._roomIdCreateRoom,
                   decoration: const InputDecoration(
                     hintText: "Room ID",
                     labelText: "Room ID",
@@ -179,9 +200,18 @@ class FormWidget extends StatelessWidget {
                   },
                 ),
                 TextFormField(
-                  controller: _passwordCreateRoom,
-                  decoration: const InputDecoration(
+                  controller: widget._passwordCreateRoom,
+                  obscureText: isVisibleCreate,
+                  decoration: InputDecoration(
                     hintText: "Password",
+                    suffixIcon: IconButton(
+                      icon: (isVisibleCreate)
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                      onPressed: () {
+                        setState(() => isVisibleCreate = !isVisibleCreate);
+                      },
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -191,31 +221,28 @@ class FormWidget extends StatelessWidget {
                   },
                 ),
                 const SizedBox(height: 14),
-                Hero(
-                  tag: _roomIdCreateRoom.text,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (_createRoomForm.currentState!.validate()) {
-                        try {
-                          await _database
-                              .createRoom(
-                            _roomIdCreateRoom.text,
-                            _passwordCreateRoom.text,
-                          )
-                              .then((value) {
-                            _roomCtr.setRoomId(_roomIdCreateRoom.text);
-                            _roomCtr.setAuthStatus(true);
-                            pushReplacement(context, _roomIdCreateRoom.text);
-                          });
-                        } catch (e) {
-                          debugPrint(e.toString());
-                        }
+                ElevatedButton(
+                  onPressed: () async {
+                    if (widget._createRoomForm.currentState!.validate()) {
+                      try {
+                        await _database
+                            .createRoom(
+                          widget._roomIdCreateRoom.text,
+                          widget._passwordCreateRoom.text,
+                        )
+                            .then(
+                          (value) {
+                            pushReplacement(context, const RoomView());
+                          },
+                        );
+                      } catch (e) {
+                        debugPrint(e.toString());
                       }
-                    },
-                    child: const Text(
-                      "Create Room",
-                      style: TextStyle(fontFamily: "Poppins"),
-                    ),
+                    }
+                  },
+                  child: const Text(
+                    "Create Room",
+                    style: TextStyle(fontFamily: "Poppins"),
                   ),
                 ),
               ],
@@ -229,7 +256,7 @@ class FormWidget extends StatelessWidget {
             vertical: 28,
           ),
           child: Form(
-            key: _joinRoomForm,
+            key: widget._joinRoomForm,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -242,7 +269,7 @@ class FormWidget extends StatelessWidget {
                   ),
                 ),
                 TextFormField(
-                  controller: _roomIdJoinRoom,
+                  controller: widget._roomIdJoinRoom,
                   decoration: const InputDecoration(
                     hintText: "Room ID",
                   ),
@@ -254,9 +281,18 @@ class FormWidget extends StatelessWidget {
                   },
                 ),
                 TextFormField(
-                  controller: _passwordJoinRoom,
-                  decoration: const InputDecoration(
+                  controller: widget._passwordJoinRoom,
+                  obscureText: isVisibleJoin,
+                  decoration: InputDecoration(
                     hintText: "Password",
+                    suffixIcon: IconButton(
+                      icon: (isVisibleJoin)
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                      onPressed: () {
+                        setState(() => isVisibleJoin = !isVisibleJoin);
+                      },
+                    ),
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -268,18 +304,19 @@ class FormWidget extends StatelessWidget {
                 const SizedBox(height: 14),
                 ElevatedButton(
                   onPressed: () async {
-                    if (_joinRoomForm.currentState!.validate()) {
+                    if (widget._joinRoomForm.currentState!.validate()) {
                       await _database
-                          .authenticate(
-                        _roomIdJoinRoom.text,
-                        _passwordJoinRoom.text,
+                          .joinRoom(
+                        widget._roomIdJoinRoom.text,
+                        widget._passwordJoinRoom.text,
                       )
                           .then(
-                        (data) {
+                        (data) async {
                           if (data == true) {
-                            _roomCtr.setRoomId(_roomIdJoinRoom.text);
-                            _roomCtr.setAuthStatus(true);
-                            pushReplacement(context, _roomIdJoinRoom.text);
+                            pushReplacement(
+                              context,
+                              const RoomView(),
+                            );
                           } else if (data == "No room found") {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(

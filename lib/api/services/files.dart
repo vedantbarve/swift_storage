@@ -13,13 +13,23 @@ final _firebaseStorage = FirebaseStorage.instance;
 final _firestore = FirebaseFirestore.instance;
 
 class FilesController extends GetxController {
+  bool _isLoading = false;
+
+  bool get loadingStatus => _isLoading;
+
+  setIsLoading(bool value) {
+    _isLoading = value;
+    update();
+  }
+
   Stream<QuerySnapshot<FileModel>> getFilesAsStream() {
     return _firestore
         .collection("files")
-        .where("roomId", isEqualTo: _roomCtr.getRoomId)
+        .where("roomId", isEqualTo: _roomCtr.getRoomData.roomId)
         .withConverter(
-            fromFirestore: (data, __) => FileModel.fromMap(data.data()!),
-            toFirestore: (doc, __) => doc.toMap())
+          fromFirestore: (data, __) => FileModel.fromMap(data.data()!),
+          toFirestore: (doc, __) => doc.toMap(),
+        )
         .snapshots();
   }
 
@@ -40,27 +50,30 @@ class FilesController extends GetxController {
     if (filesSize > 20971520) {
       return "filesSize";
     }
-
+    setIsLoading(true);
     for (var element in data.files) {
       final fileId = const Uuid().v4();
-      final uploadTask = await _firebaseStorage
-          .ref("rooms/${_roomCtr.getRoomId}/${element.name}")
+      await _firebaseStorage
+          .ref("rooms/${_roomCtr.getRoomData.roomId}/${element.name}")
           .putData(element.bytes!);
+
+      final fullPath = _firebaseStorage
+          .ref("rooms/${_roomCtr.getRoomData.roomId}/${element.name}")
+          .fullPath;
       final fileUrl = await _firebaseStorage
-          .ref("rooms/${_roomCtr.getRoomId}/${element.name}")
+          .ref("rooms/${_roomCtr.getRoomData.roomId}/${element.name}")
           .getDownloadURL();
       final fileData = FileModel(
-        roomId: _roomCtr.getRoomId,
+        roomId: _roomCtr.getRoomData.roomId,
         name: element.name,
-        fullPath: uploadTask.metadata!.fullPath,
+        fullPath: fullPath,
         fileUrl: fileUrl,
-        size: uploadTask.totalBytes,
+        size: element.size,
         fileId: fileId,
       ).toMap();
       await _firestore.doc("files/$fileId").set(fileData);
     }
-
-    update();
+    setIsLoading(false);
   }
 
   Future deleteFile(String filePath, String fileId) async {
@@ -72,7 +85,7 @@ class FilesController extends GetxController {
     int totalSize = 0;
     final data = await _firestore
         .collection("files")
-        .where("roomId", isEqualTo: _roomCtr.getRoomId)
+        .where("roomId", isEqualTo: _roomCtr.getRoomData.roomId)
         .get();
 
     for (var element in data.docs) {

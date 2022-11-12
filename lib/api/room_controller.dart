@@ -1,19 +1,13 @@
 import 'package:get/get.dart';
+import 'package:swift_storage/api/model/room_model.dart';
 
 class RoomController extends GetxController {
-  String _roomId = "";
-  bool _isAuthenticated = false;
+  late RoomModel _roomData;
 
-  String get getRoomId => _roomId;
-  bool get getAuthStatus => _isAuthenticated;
+  RoomModel get getRoomData => _roomData;
 
-  void setAuthStatus(bool value) {
-    _isAuthenticated = value;
-    update();
-  }
-
-  void setRoomId(String value) {
-    _roomId = value;
+  void setRoomData(RoomModel roomData) {
+    _roomData = roomData;
     update();
   }
 }

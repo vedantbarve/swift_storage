@@ -1,8 +1,9 @@
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
-pushReplacement(BuildContext context, String roomId) {
-  Beamer.of(context).beamToReplacementNamed('/room/$roomId');
+pushReplacement(BuildContext context, Widget widget) {
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(builder: (_) => widget),
+  );
 }
 
 pushRoute(BuildContext context, Widget widget) {

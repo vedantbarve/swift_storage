@@ -1,5 +1,5 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:swift_storage/api/room_controller.dart';
@@ -19,7 +19,22 @@ class RoomView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("RoomId : ${_roomCtr.getRoomId}"),
+        title: Text("RoomId : ${_roomCtr.getRoomData.roomId}"),
+        actions: [
+          IconButton(
+            onPressed: () async {
+              await FlutterClipboard.copy(_roomCtr.getRoomData.roomId).then(
+                (value) => ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    backgroundColor: primary,
+                    content: Text("Room Id copied to clipboard"),
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(Icons.copy),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
@@ -54,6 +69,35 @@ class RoomView extends StatelessWidget {
       body: GetBuilder(
         init: _files,
         builder: (ctr) {
+          if (_files.loadingStatus == true) {
+            WidgetsBinding.instance.addPostFrameCallback(
+              (timeStamp) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: secondary,
+                    duration: const Duration(seconds: 100),
+                    content: Row(
+                      children: const [
+                        CircularProgressIndicator(),
+                        SizedBox(width: 14),
+                        Text(
+                          "Uploading data to cloud",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+          if (_files.loadingStatus == false) {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          }
+
           return StreamBuilder(
             stream: _files.getFilesAsStream(),
             builder: (
@@ -110,9 +154,6 @@ class RoomView extends StatelessWidget {
                         ),
                       ),
                       child: ListTile(
-                        onTap: () {
-                          print(item.data().toMap());
-                        },
                         leading: const Icon(Icons.folder),
                         title: const Text(
                           "Name : ",
