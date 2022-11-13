@@ -23,7 +23,7 @@ class RoomView extends StatelessWidget {
       builder: (_, constraints) {
         return Scaffold(
           appBar: AppBar(
-            title: Text("RoomId : ${_roomCtr.getRoomData.roomId}"),
+            title: Text("Room ID : ${_roomCtr.getRoomData.roomId}"),
             actions: [
               IconButton(
                 onPressed: () async {
