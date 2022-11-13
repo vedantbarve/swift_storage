@@ -1,6 +1,6 @@
-# swift_storage
+# Swift Storage
 
-A new Flutter project.
+![cover](assets/cover.png)
 
 ## Getting Started
 
