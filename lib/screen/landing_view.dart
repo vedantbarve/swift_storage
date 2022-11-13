@@ -1,32 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:swift_storage/global/snackbar.dart';
 import 'package:swift_storage/screen/room_view.dart';
 import 'package:uuid/uuid.dart';
 import '../api/services/database.dart';
-import '../global/colors.dart';
+import '../global/const.dart';
 import '../global/navigation.dart';
 
 final _database = DataBaseController();
 
-class LandingView extends StatefulWidget {
+class LandingView extends StatelessWidget {
   const LandingView({super.key});
-
-  @override
-  State<LandingView> createState() => _LandingViewState();
-}
-
-class _LandingViewState extends State<LandingView> {
-  @override
-  void initState() {
-    super.initState();
-    _roomIdCreateRoom.text = const Uuid().v4().substring(0, 5);
-  }
-
-  final _joinRoomForm = GlobalKey<FormState>();
-  final _createRoomForm = GlobalKey<FormState>();
-  final _passwordCreateRoom = TextEditingController();
-  final _roomIdCreateRoom = TextEditingController();
-  final _passwordJoinRoom = TextEditingController();
-  final _roomIdJoinRoom = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -66,19 +49,12 @@ class _LandingViewState extends State<LandingView> {
                         ),
                       ),
                     ),
-                    Flexible(
+                    const Flexible(
                       flex: 1,
                       fit: FlexFit.tight,
                       child: Center(
                         child: SingleChildScrollView(
-                          child: FormWidget(
-                            createRoomForm: _createRoomForm,
-                            roomIdCreateRoom: _roomIdCreateRoom,
-                            passwordCreateRoom: _passwordCreateRoom,
-                            joinRoomForm: _joinRoomForm,
-                            roomIdJoinRoom: _roomIdJoinRoom,
-                            passwordJoinRoom: _passwordJoinRoom,
-                          ),
+                          child: FormWidget(),
                         ),
                       ),
                     ),
@@ -112,14 +88,7 @@ class _LandingViewState extends State<LandingView> {
                         ),
                       ),
                     ),
-                    FormWidget(
-                      createRoomForm: _createRoomForm,
-                      roomIdCreateRoom: _roomIdCreateRoom,
-                      passwordCreateRoom: _passwordCreateRoom,
-                      joinRoomForm: _joinRoomForm,
-                      roomIdJoinRoom: _roomIdJoinRoom,
-                      passwordJoinRoom: _passwordJoinRoom,
-                    ),
+                    const FormWidget(),
                   ],
                 ),
               );
@@ -132,38 +101,69 @@ class _LandingViewState extends State<LandingView> {
 }
 
 class FormWidget extends StatefulWidget {
-  const FormWidget({
-    Key? key,
-    required GlobalKey<FormState> createRoomForm,
-    required TextEditingController roomIdCreateRoom,
-    required TextEditingController passwordCreateRoom,
-    required GlobalKey<FormState> joinRoomForm,
-    required TextEditingController roomIdJoinRoom,
-    required TextEditingController passwordJoinRoom,
-  })  : _createRoomForm = createRoomForm,
-        _roomIdCreateRoom = roomIdCreateRoom,
-        _passwordCreateRoom = passwordCreateRoom,
-        _joinRoomForm = joinRoomForm,
-        _roomIdJoinRoom = roomIdJoinRoom,
-        _passwordJoinRoom = passwordJoinRoom,
-        super(key: key);
-
-  final GlobalKey<FormState> _createRoomForm;
-  final TextEditingController _roomIdCreateRoom;
-  final TextEditingController _passwordCreateRoom;
-  final GlobalKey<FormState> _joinRoomForm;
-  final TextEditingController _roomIdJoinRoom;
-  final TextEditingController _passwordJoinRoom;
+  const FormWidget({super.key});
 
   @override
   State<FormWidget> createState() => _FormWidgetState();
 }
 
 class _FormWidgetState extends State<FormWidget> {
+  final _joinRoomForm = GlobalKey<FormState>();
+  final _createRoomForm = GlobalKey<FormState>();
+  final _passwordCreateRoom = TextEditingController();
+  final _roomIdCreateRoom = TextEditingController();
+  final _passwordJoinRoom = TextEditingController();
+  final _roomIdJoinRoom = TextEditingController();
   bool isVisibleJoin = true;
   bool isVisibleCreate = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _roomIdCreateRoom.text = const Uuid().v4().substring(0, 5);
+  }
+
   @override
   Widget build(BuildContext context) {
+    onJoinRoomPressed() async {
+      if (_joinRoomForm.currentState!.validate()) {
+        try {
+          await _database
+              .joinRoom(_roomIdJoinRoom.text, _passwordJoinRoom.text)
+              .then(
+            (data) async {
+              if (data == true) {
+                pushReplacement(context, const RoomView());
+              } else if (data == "No room found") {
+                showSnackBar(context, "No Room found", color: Colors.red);
+              } else {
+                showSnackBar(context, "Something went wrong",
+                    color: Colors.red);
+              }
+            },
+          );
+        } catch (err) {
+          showSnackBar(context, err.toString());
+        }
+      }
+    }
+
+    onCreateRoomPressed() async {
+      if (_createRoomForm.currentState!.validate()) {
+        try {
+          await _database
+              .createRoom(_roomIdCreateRoom.text, _passwordCreateRoom.text)
+              .then(
+            (value) {
+              pushReplacement(context, const RoomView());
+            },
+          );
+        } catch (e) {
+          showSnackBar(context, e.toString());
+        }
+      }
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
@@ -173,7 +173,7 @@ class _FormWidgetState extends State<FormWidget> {
             vertical: 28,
           ),
           child: Form(
-            key: widget._createRoomForm,
+            key: _createRoomForm,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -187,7 +187,7 @@ class _FormWidgetState extends State<FormWidget> {
                 ),
                 TextFormField(
                   enabled: false,
-                  controller: widget._roomIdCreateRoom,
+                  controller: _roomIdCreateRoom,
                   decoration: const InputDecoration(
                     hintText: "Room ID",
                     labelText: "Room ID",
@@ -200,7 +200,7 @@ class _FormWidgetState extends State<FormWidget> {
                   },
                 ),
                 TextFormField(
-                  controller: widget._passwordCreateRoom,
+                  controller: _passwordCreateRoom,
                   obscureText: isVisibleCreate,
                   decoration: InputDecoration(
                     hintText: "Password",
@@ -222,24 +222,7 @@ class _FormWidgetState extends State<FormWidget> {
                 ),
                 const SizedBox(height: 14),
                 ElevatedButton(
-                  onPressed: () async {
-                    if (widget._createRoomForm.currentState!.validate()) {
-                      try {
-                        await _database
-                            .createRoom(
-                          widget._roomIdCreateRoom.text,
-                          widget._passwordCreateRoom.text,
-                        )
-                            .then(
-                          (value) {
-                            pushReplacement(context, const RoomView());
-                          },
-                        );
-                      } catch (e) {
-                        debugPrint(e.toString());
-                      }
-                    }
-                  },
+                  onPressed: onCreateRoomPressed,
                   child: const Text(
                     "Create Room",
                     style: TextStyle(fontFamily: "Poppins"),
@@ -256,7 +239,7 @@ class _FormWidgetState extends State<FormWidget> {
             vertical: 28,
           ),
           child: Form(
-            key: widget._joinRoomForm,
+            key: _joinRoomForm,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -269,7 +252,7 @@ class _FormWidgetState extends State<FormWidget> {
                   ),
                 ),
                 TextFormField(
-                  controller: widget._roomIdJoinRoom,
+                  controller: _roomIdJoinRoom,
                   decoration: const InputDecoration(
                     hintText: "Room ID",
                   ),
@@ -281,7 +264,7 @@ class _FormWidgetState extends State<FormWidget> {
                   },
                 ),
                 TextFormField(
-                  controller: widget._passwordJoinRoom,
+                  controller: _passwordJoinRoom,
                   obscureText: isVisibleJoin,
                   decoration: InputDecoration(
                     hintText: "Password",
@@ -303,37 +286,7 @@ class _FormWidgetState extends State<FormWidget> {
                 ),
                 const SizedBox(height: 14),
                 ElevatedButton(
-                  onPressed: () async {
-                    if (widget._joinRoomForm.currentState!.validate()) {
-                      await _database
-                          .joinRoom(
-                        widget._roomIdJoinRoom.text,
-                        widget._passwordJoinRoom.text,
-                      )
-                          .then(
-                        (data) async {
-                          if (data == true) {
-                            pushReplacement(
-                              context,
-                              const RoomView(),
-                            );
-                          } else if (data == "No room found") {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("No Room found"),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Something went wrong"),
-                              ),
-                            );
-                          }
-                        },
-                      );
-                    }
-                  },
+                  onPressed: onJoinRoomPressed,
                   child: const Text(
                     "Join Room",
                     style: TextStyle(fontFamily: "Poppins"),
