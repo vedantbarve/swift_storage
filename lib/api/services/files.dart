@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:swift_storage/global/const.dart';
 import 'package:uuid/uuid.dart';
 
 import '../model/file_model.dart';
@@ -34,20 +35,21 @@ class FilesController extends GetxController {
   }
 
   Future<dynamic> selectAndUploadFiles() async {
-    final roomSize = await getRoomSize();
-    int filesSize = 0;
-    if (roomSize > 20971520) {
+    final _roomSize = await getRoomSize();
+    int _filesSize = 0;
+    if (_roomSize > roomSizeLimit) {
       return "roomSize";
     }
     final data = await FilePicker.platform.pickFiles(
       allowMultiple: true,
+      allowCompression: true,
     );
 
     for (var element in data!.files) {
-      filesSize += element.size;
+      _filesSize += element.size;
     }
 
-    if (filesSize > 20971520) {
+    if (_filesSize > roomSizeLimit) {
       return "filesSize";
     }
     setIsLoading(true);

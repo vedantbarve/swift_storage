@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'firebase_options.dart';
-import 'global/colors.dart';
+import 'global/const.dart';
 import 'screen/landing_view.dart';
 
 Future main() async {
