@@ -35,9 +35,9 @@ class FilesController extends GetxController {
   }
 
   Future<dynamic> selectAndUploadFiles() async {
-    final _roomSize = await getRoomSize();
-    int _filesSize = 0;
-    if (_roomSize > roomSizeLimit) {
+    final roomSize = await getRoomSize();
+    int filesSize = 0;
+    if (roomSize > roomSizeLimit) {
       return "roomSize";
     }
     final data = await FilePicker.platform.pickFiles(
@@ -46,10 +46,10 @@ class FilesController extends GetxController {
     );
 
     for (var element in data!.files) {
-      _filesSize += element.size;
+      filesSize += element.size;
     }
 
-    if (_filesSize > roomSizeLimit) {
+    if (filesSize > roomSizeLimit) {
       return "filesSize";
     }
     setIsLoading(true);

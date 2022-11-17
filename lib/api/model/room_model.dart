@@ -4,11 +4,13 @@ class RoomModel {
   final String roomId;
   final String password;
   final String timeStamp;
+  final List accessList;
 
   RoomModel({
     required this.roomId,
     required this.password,
     required this.timeStamp,
+    required this.accessList,
   });
 
   Map<String, dynamic> toMap() {
@@ -16,6 +18,7 @@ class RoomModel {
       'roomId': roomId,
       'password': password,
       'timeStamp': timeStamp,
+      'accessList': accessList,
     };
   }
 
@@ -24,6 +27,7 @@ class RoomModel {
       roomId: map['roomId'] ?? '',
       password: map['password'] ?? '',
       timeStamp: map['timeStamp'] ?? '',
+      accessList: map['accessList'] ?? [],
     );
   }
 

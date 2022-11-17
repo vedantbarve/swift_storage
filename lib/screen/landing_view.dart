@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:swift_storage/global/snackbar.dart';
-import 'package:swift_storage/screen/room_view.dart';
 import 'package:uuid/uuid.dart';
 import '../api/services/database.dart';
 import '../global/const.dart';
-import '../global/navigation.dart';
 
 final _database = DataBaseController();
 
@@ -133,12 +132,15 @@ class _FormWidgetState extends State<FormWidget> {
               .then(
             (data) async {
               if (data == true) {
-                pushReplacement(context, const RoomView());
+                Get.offNamed("/room/${_roomIdJoinRoom.text}");
               } else if (data == "No room found") {
                 showSnackBar(context, "No Room found", color: Colors.red);
               } else {
-                showSnackBar(context, "Something went wrong",
-                    color: Colors.red);
+                showSnackBar(
+                  context,
+                  "Something went wrong",
+                  color: Colors.red,
+                );
               }
             },
           );
@@ -155,7 +157,7 @@ class _FormWidgetState extends State<FormWidget> {
               .createRoom(_roomIdCreateRoom.text, _passwordCreateRoom.text)
               .then(
             (value) {
-              pushReplacement(context, const RoomView());
+              Get.offNamed("/room/${_roomIdCreateRoom.text}");
             },
           );
         } catch (e) {
