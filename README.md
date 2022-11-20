@@ -10,7 +10,7 @@ In day-to-day life there is a constant need for small, temporary storage solutio
 
 ## Features
 1. Swift storage is a web app available on all platforms with internet access.
-2. Upto 20MB of storage per room.
+2. Upto 50MB of storage per room.
 3. All room data and storage data gets cleared at 24:00 IST using **Cloud Schedular and Cloud Functions**.
 
 ## Learnings
