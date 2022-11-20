@@ -8,7 +8,7 @@ class AboutDialogue extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LimitedBox(
-      maxHeight: 500,
+      maxHeight: 300,
       maxWidth: 300,
       child: AlertDialog(
         title: const Text(
@@ -21,7 +21,8 @@ class AboutDialogue extends StatelessWidget {
           IconButton(
             onPressed: () async {
               await launchUrlString(
-                  "https://www.linkedin.com/in/vedant-barve/");
+                "https://www.linkedin.com/in/vedant-barve/",
+              );
             },
             icon: const FaIcon(
               FontAwesomeIcons.linkedin,
@@ -49,7 +50,7 @@ class AboutDialogue extends StatelessWidget {
               children: const [
                 SizedBox(height: 14),
                 Text("Features :"),
-                Text("1. Upto 20MB storage per room."),
+                Text("1. Upto 50MB storage per room."),
                 Text("2. Instaneously joining rooms using QR code."),
                 Text(
                     "3. All room data and storage data gets cleared at 24:00 IST.")

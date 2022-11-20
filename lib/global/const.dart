@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const roomSizeLimit = 20971520;
+const roomSizeLimit = 52428800;
 
 // Colors
 const primary = Color(0xff41436A);

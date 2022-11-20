@@ -66,12 +66,12 @@ class RoomOnAccess extends StatelessWidget {
                 if (value == "roomSize") {
                   showSnackBar(
                     context,
-                    "Size of the room is greater than 20MB\nDelete some files",
+                    "Size of the room is greater than 50MB\nDelete some files",
                   );
                 } else if (value == "filesSize") {
                   showSnackBar(
                     context,
-                    "Size of the room will greater than 20MB",
+                    "Size of the room will greater than 50MB",
                   );
                 }
               },
