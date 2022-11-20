@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:swift_storage/global/snackbar.dart';
+import 'package:swift_storage/screen/landing_view/about_dialogue.dart';
 import 'package:uuid/uuid.dart';
-import '../api/services/database.dart';
-import '../global/const.dart';
+import '../../api/services/database.dart';
+import '../../global/const.dart';
 
 final _database = DataBaseController();
 
@@ -14,87 +15,104 @@ class LandingView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (_, constraints) {
-        return Scaffold(
-          body: Builder(
-            builder: (context) {
-              if (constraints.maxWidth > 768) {
-                return Row(
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Container(
-                        height: double.maxFinite,
-                        width: double.maxFinite,
-                        color: primary,
+        return Title(
+          title: 'Home',
+          color: Colors.white,
+          child: Scaffold(
+            body: Builder(
+              builder: (context) {
+                if (constraints.maxWidth > 768) {
+                  return Row(
+                    children: [
+                      Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
+                        child: Container(
+                          height: double.maxFinite,
+                          width: double.maxFinite,
+                          color: primary,
+                          child: const Header(),
+                        ),
+                      ),
+                      const Flexible(
+                        flex: 1,
+                        fit: FlexFit.tight,
                         child: Center(
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Image.asset(
-                                "assets/cloud-computing 128px.png",
-                              ),
-                              const Text(
-                                "Swift Storage",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontFamily: "Poppins",
-                                  fontSize: 38,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          child: SingleChildScrollView(
+                            child: FormWidget(),
                           ),
                         ),
                       ),
-                    ),
-                    const Flexible(
-                      flex: 1,
-                      fit: FlexFit.tight,
-                      child: Center(
-                        child: SingleChildScrollView(
-                          child: FormWidget(),
-                        ),
+                    ],
+                  );
+                }
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 300,
+                        width: double.maxFinite,
+                        color: const Color(0xff41436A),
+                        child: const Header(),
                       ),
-                    ),
-                  ],
+                      const FormWidget(),
+                    ],
+                  ),
                 );
-              }
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 300,
-                      width: double.maxFinite,
-                      color: const Color(0xff41436A),
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              "assets/cloud-computing 128px.png",
-                            ),
-                            const Text(
-                              "Swift Storage",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontFamily: "Poppins",
-                                fontSize: 38,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    const FormWidget(),
-                  ],
-                ),
-              );
-            },
+              },
+            ),
           ),
         );
       },
+    );
+  }
+}
+
+class Header extends StatelessWidget {
+  const Header({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+          child: IconButton(
+            icon: const Icon(
+              Icons.info,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return const AboutDialogue();
+                },
+              );
+            },
+          ),
+        ),
+        Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                "assets/cloud-computing 128px.png",
+              ),
+              const Text(
+                "Swift Storage",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontFamily: "Poppins",
+                  fontSize: 38,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
@@ -131,11 +149,21 @@ class _FormWidgetState extends State<FormWidget> {
               .joinRoom(_roomIdJoinRoom.text, _passwordJoinRoom.text)
               .then(
             (data) async {
-              if (data == true) {
+              if (data == Status.approved) {
                 Get.offNamed("/room/${_roomIdJoinRoom.text}");
-              } else if (data == "No room found") {
-                showSnackBar(context, "No Room found", color: Colors.red);
-              } else {
+              } else if (data == Status.denied) {
+                showSnackBar(
+                  context,
+                  "Oops! You have entered the wrong password.",
+                  color: Colors.red,
+                );
+              } else if (data == Status.noRoom) {
+                showSnackBar(
+                  context,
+                  "No Room found",
+                  color: Colors.red,
+                );
+              } else if (data == Status.unknown) {
                 showSnackBar(
                   context,
                   "Something went wrong",

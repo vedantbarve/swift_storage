@@ -2,11 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:swift_storage/screen/room_view.dart';
+import 'package:swift_storage/screen/room_view/room_view.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'firebase_options.dart';
 import 'global/const.dart';
-import 'screen/landing_view.dart';
+import 'screen/landing_view/landing_view.dart';
 
 final _firebaseAuth = FirebaseAuth.instance;
 
@@ -36,9 +36,7 @@ class RootWidget extends StatelessWidget {
         GetPage(
           name: '/room/:roomId',
           title: "Room ID : ${Get.parameters["roomId"]}",
-          page: () {
-            return const RoomView();
-          },
+          page: () => const RoomView(),
         ),
       ],
       theme: ThemeData(

@@ -45,6 +45,7 @@ dependencies:
   firebase_auth: ^4.1.2
   qr_flutter: ^4.0.0
   encryptor: ^0.0.1
+  font_awesome_flutter: ^10.2.1
 
 dev_dependencies:
   flutter_test:
