@@ -2,8 +2,10 @@ import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:swift_storage/api/room_controller.dart';
 import 'package:swift_storage/api/services/database.dart';
+import 'package:swift_storage/api/services/encryption.dart';
 import 'package:swift_storage/api/services/files.dart';
 import 'package:swift_storage/global/snackbar.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -14,6 +16,7 @@ import '../global/const.dart';
 final _roomCtr = Get.put(RoomController());
 final _files = Get.put(FilesController());
 final _database = Get.put(DataBaseController());
+final _encryptCtr = Get.put(EncryptionController());
 
 class RoomView extends StatelessWidget {
   const RoomView({super.key});
@@ -21,10 +24,13 @@ class RoomView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final roomId = Get.parameters["roomId"]!;
+    final pass = Get.parameters["pass"];
     return LayoutBuilder(
       builder: (_, constraints) {
         return FutureBuilder(
-          future: _database.hasAccess(roomId),
+          future: (pass == null)
+              ? _database.hasAccess()
+              : _database.onDynamicUrl(roomId, pass),
           builder: (context, AsyncSnapshot<bool> snapshot) {
             if (snapshot.hasError) {
               return Scaffold(
@@ -101,6 +107,33 @@ class RoomOnAccess extends StatelessWidget {
       appBar: AppBar(
         title: Text("Room ID : ${_roomCtr.getRoomData.roomId}"),
         actions: [
+          IconButton(
+            onPressed: () async {
+              final encryptedData = _encryptCtr.encryptData(
+                _roomCtr.getRoomData.roomId,
+                _roomCtr.getRoomData.password,
+              );
+
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: const Text("Scan QR code to join"),
+                  content: SizedBox(
+                    height: 200,
+                    width: 200,
+                    child: Center(
+                      child: QrImage(
+                        size: 200,
+                        data:
+                            "https://swift-storage.web.app/room/${_roomCtr.getRoomData.roomId}?pass=$encryptedData",
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+            icon: const Icon(Icons.qr_code),
+          ),
           IconButton(
             onPressed: () async {
               await FlutterClipboard.copy(_roomCtr.getRoomData.roomId).then(

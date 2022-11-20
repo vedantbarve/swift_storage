@@ -15,7 +15,7 @@ Future main() async {
   setPathUrlStrategy();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await _firebaseAuth.signInAnonymously();
-  FirebaseAuth.instance.setPersistence(Persistence.SESSION);
+  await _firebaseAuth.setPersistence(Persistence.LOCAL);
   runApp(const RootWidget());
 }
 
@@ -36,7 +36,9 @@ class RootWidget extends StatelessWidget {
         GetPage(
           name: '/room/:roomId',
           title: "Room ID : ${Get.parameters["roomId"]}",
-          page: () => const RoomView(),
+          page: () {
+            return const RoomView();
+          },
         ),
       ],
       theme: ThemeData(

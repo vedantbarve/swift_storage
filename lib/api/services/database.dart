@@ -5,6 +5,11 @@ import 'package:get/get.dart';
 import 'package:swift_storage/api/model/room_model.dart';
 import 'package:swift_storage/api/room_controller.dart';
 
+import 'encryption.dart';
+
+final _encryptCtr = Get.put(EncryptionController());
+final _firebaseAuth = FirebaseAuth.instance;
+
 class DataBaseController extends GetxController {
   final _firestore = FirebaseFirestore.instance;
   final _firebaseAuth = FirebaseAuth.instance;
@@ -22,7 +27,23 @@ class DataBaseController extends GetxController {
     await _firestore.doc("rooms/$roomId").set(roomData.toMap());
   }
 
-  Future<bool> hasAccess(String roomId) async {
+  Future<bool> onDynamicUrl(String roomId, String pass) async {
+    final password = _encryptCtr.decryptData(roomId, pass);
+    final room = await _firestore.doc("rooms/$roomId").get();
+    final roomData = RoomModel.fromMap(room.data()!);
+    if (room.exists) {
+      if (roomData.password == password) {
+        roomData.accessList.add(_firebaseAuth.currentUser!.uid);
+        await _firestore.doc("rooms/$roomId").set(roomData.toMap());
+        _roomCtr.setRoomData(roomData);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  Future<bool> hasAccess() async {
+    String roomId = Get.parameters["roomId"]!;
     final data = await _firestore.doc("rooms/$roomId").get();
     final roomData = RoomModel.fromMap(data.data()!);
     final hasAccess = roomData.accessList.contains(
