@@ -43,35 +43,48 @@ class DataBaseController extends GetxController {
     return Status.unknown;
   }
 
-  Future<Status> validateUser() async {
-    final roomId = Get.parameters["roomId"];
-    final pass = Get.parameters["pass"];
+  Future logError(Object? error) async {
+    await _firestore.collection("errors").add(
+      {
+        "timestamp": DateTime.now().toIso8601String(),
+        "error": error,
+        "uid": FirebaseAuth.instance.currentUser!.uid,
+      },
+    );
+  }
 
-    final data = await _firestore.doc("rooms/$roomId").get();
-    if (!data.exists) {
-      return Status.noRoom;
-    }
-    final roomData = RoomModel.fromMap(data.data()!);
-
-    if (roomId != null && pass != null) {
-      final password = _encryptCtr.decryptData(roomId, pass);
-      if (roomData.password == password) {
-        roomData.accessList.add(_uid);
-        await _firestore.doc("rooms/$roomId").set(roomData.toMap());
-        _roomCtr.setRoomData(roomData);
-        return Status.approved;
-      } else if (roomData.password != password) {
-        return Status.denied;
+  Future<Status?> validateUser() async {
+    try {
+      final roomId = Get.parameters["roomId"];
+      final pass = Get.parameters["pass"];
+      final data = await _firestore.doc("rooms/$roomId").get();
+      if (!data.exists) {
+        return Status.noRoom;
       }
-    } else {
-      final hasAccess = roomData.accessList.contains(_uid);
-      if (hasAccess) {
-        _roomCtr.setRoomData(roomData);
-        return Status.approved;
+      final roomData = RoomModel.fromMap(data.data()!);
+
+      if (roomId != null && pass != null) {
+        final password = _encryptCtr.decryptData(roomId, pass);
+        if (roomData.password == password) {
+          roomData.accessList.add(_uid);
+          await _firestore.doc("rooms/$roomId").set(roomData.toMap());
+          _roomCtr.setRoomData(roomData);
+          return Status.approved;
+        } else if (roomData.password != password) {
+          return Status.denied;
+        }
       } else {
-        return Status.denied;
+        final hasAccess = roomData.accessList.contains(_uid);
+        if (hasAccess) {
+          _roomCtr.setRoomData(roomData);
+          return Status.approved;
+        } else {
+          return Status.denied;
+        }
       }
+      return Status.unknown;
+    } catch (err) {
+      rethrow;
     }
-    return Status.unknown;
   }
 }

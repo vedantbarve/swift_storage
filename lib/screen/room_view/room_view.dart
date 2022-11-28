@@ -18,9 +18,9 @@ class RoomView extends StatelessWidget {
       builder: (_, constraints) {
         return FutureBuilder(
           future: _database.validateUser(),
-          builder: (context, AsyncSnapshot<Status> snapshot) {
+          builder: (context, AsyncSnapshot<Status?> snapshot) {
             if (snapshot.hasError) {
-              return const RoomOnError();
+              return RoomOnError(error: snapshot.error.toString());
             }
             if (snapshot.hasData) {
               final status = snapshot.data!;
