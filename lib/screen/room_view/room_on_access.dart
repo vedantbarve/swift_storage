@@ -59,7 +59,7 @@ class RoomOnAccess extends StatelessWidget {
             CopyToClipBoardButton(),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.extended(
           onPressed: () async {
             await _filesCtr.selectAndUploadFiles().then(
               (value) {
@@ -77,7 +77,8 @@ class RoomOnAccess extends StatelessWidget {
               },
             );
           },
-          child: const Icon(Icons.add),
+          label: const Text("Add"),
+          icon: const Icon(Icons.add),
         ),
         body: GetBuilder(
           init: _filesCtr,
@@ -233,8 +234,11 @@ class CustomListTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        onTap: () async {
-          await launchUrlString(item.fileUrl);
+        onTap: () {
+          // final roomId = Get.parameters["roomId"];
+          // final fileId = item.fileId;
+          // Get.toNamed("/room/$roomId/$fileId");
+          // showImageViewerPager()
         },
         leading: const Icon(Icons.folder),
         title: const Text(

@@ -14,28 +14,24 @@ class RoomView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (_, constraints) {
-        return FutureBuilder(
-          future: _database.validateUser(),
-          builder: (context, AsyncSnapshot<Status?> snapshot) {
-            if (snapshot.hasError) {
-              return RoomOnError(error: snapshot.error.toString());
-            }
-            if (snapshot.hasData) {
-              final status = snapshot.data!;
-              if (status == Status.approved) {
-                return const RoomOnAccess();
-              } else if (status == Status.denied) {
-                return const RoomOnDenial();
-              } else if (status == Status.unknown) {
-                return const RoomOnError();
-              }
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+    return FutureBuilder(
+      future: _database.validateUser(),
+      builder: (context, AsyncSnapshot<Status?> snapshot) {
+        if (snapshot.hasError) {
+          return RoomOnError(error: snapshot.error.toString());
+        }
+        if (snapshot.hasData) {
+          final status = snapshot.data!;
+          if (status == Status.approved) {
+            return const RoomOnAccess();
+          } else if (status == Status.denied) {
+            return const RoomOnDenial();
+          } else if (status == Status.unknown) {
+            return const RoomOnError();
+          }
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
         );
       },
     );
