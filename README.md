@@ -1,6 +1,6 @@
 # Swift Storage
 
-<img src="assets/cover.png" />
+<img src="assets/swift-storage-cover.jpg" />
 
 ## Description
 In day-to-day life there is a constant need for small, temporary storage solutions like at xerox centres, transferring documents from your mobile to computer or when you are not carrying your pendrive. Logging onto your Google Drive needs 2 step authentication which is a lengthy process. Swift Storage provides you with a temporary storage for easy and quick document transfer.
