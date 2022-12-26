@@ -1,8 +1,10 @@
 import 'package:clipboard/clipboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:swift_storage/global/const.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../api/model/file_model.dart';
@@ -10,6 +12,7 @@ import '../../api/room_controller.dart';
 import '../../api/services/encryption.dart';
 import '../../api/services/files.dart';
 import '../../global/snackbar.dart';
+import 'package:dart_date/dart_date.dart';
 
 final _filesCtr = Get.put(FilesController());
 final _roomCtr = Get.put(RoomController());
@@ -42,11 +45,26 @@ class RoomOnAccess extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () => Get.back(),
-                        child: const Text("Back"),
+                        child: const Text(
+                          "Back",
+                          style: TextStyle(
+                            color: secondary,
+                          ),
+                        ),
                       ),
-                      ElevatedButton(
+                      OutlinedButton(
+                        style: ButtonStyle(
+                          side: MaterialStateProperty.all(
+                            const BorderSide(color: secondary),
+                          ),
+                        ),
                         onPressed: () => Get.offAllNamed('/'),
-                        child: const Text("Confirm"),
+                        child: const Text(
+                          "Confirm",
+                          style: TextStyle(
+                            color: secondary,
+                          ),
+                        ),
                       ),
                     ],
                   );
@@ -114,12 +132,65 @@ class RoomOnAccess extends StatelessWidget {
                       ),
                     );
                   }
-                  return ListView.builder(
-                    itemCount: files.length,
-                    itemBuilder: (context, index) {
-                      final item = files[index].data();
-                      return CustomListTile(item: item);
-                    },
+                  return Column(
+                    children: [
+                      GetBuilder(
+                        init: _roomCtr,
+                        builder: (_) {
+                          if (_roomCtr.getRoomData.authorId ==
+                              FirebaseAuth.instance.currentUser!.uid) {
+                            final deleteDate = _roomCtr.getRoomData.deleteDate;
+                            var date = DateTime.parse(deleteDate);
+                            return ListTile(
+                              onTap: () async {
+                                await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime.parse(
+                                      _roomCtr.getRoomData.firstDate),
+                                  lastDate: DateTime.parse(
+                                      _roomCtr.getRoomData.lastdate),
+                                ).then(
+                                  (data) async {
+                                    if (data != null) {
+                                      try {
+                                        await _roomCtr
+                                            .updateDeleteDate(data)
+                                            .then(
+                                          (value) {
+                                            showSnackBar(
+                                              context,
+                                              "Delete date scheduled successfully",
+                                              color: Colors.green.shade700,
+                                            );
+                                          },
+                                        );
+                                      } catch (err) {
+                                        showSnackBar(context, err.toString());
+                                      }
+                                    }
+                                  },
+                                );
+                              },
+                              title: const Text("Schedule delete"),
+                              subtitle: Text(date.toHumanString()),
+                              trailing: const Icon(Icons.alarm),
+                            );
+                          }
+                          return Container();
+                        },
+                      ),
+                      const Divider(),
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: files.length,
+                          itemBuilder: (context, index) {
+                            final item = files[index].data();
+                            return CustomListTile(item: item);
+                          },
+                        ),
+                      ),
+                    ],
                   );
                 }
                 return const Center(
@@ -234,11 +305,8 @@ class CustomListTile extends StatelessWidget {
         ),
       ),
       child: ListTile(
-        onTap: () {
-          // final roomId = Get.parameters["roomId"];
-          // final fileId = item.fileId;
-          // Get.toNamed("/room/$roomId/$fileId");
-          // showImageViewerPager()
+        onTap: () async {
+          await launchUrlString(item.fileUrl);
         },
         leading: const Icon(Icons.folder),
         title: const Text(
@@ -254,12 +322,7 @@ class CustomListTile extends StatelessWidget {
             fontFamily: "Poppins",
           ),
         ),
-        trailing: IconButton(
-          icon: const Icon(Icons.download),
-          onPressed: () async {
-            await launchUrlString(item.fileUrl);
-          },
-        ),
+        trailing: const Icon(Icons.download),
       ),
     );
   }

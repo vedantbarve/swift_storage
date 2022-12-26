@@ -14,6 +14,23 @@ class DataBaseController extends GetxController {
   final String _uid = FirebaseAuth.instance.currentUser!.uid;
 
   Future<void> createRoom(String roomId, String password) async {
+    final now = DateTime.now();
+    final lastDate = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      23,
+      59,
+      59,
+    ).add(const Duration(days: 7)).toIso8601String();
+    final deleteDate = DateTime(
+      now.year,
+      now.month,
+      now.day,
+      23,
+      59,
+      59,
+    ).toIso8601String();
     final roomData = RoomModel(
       roomId: roomId,
       password: password,
@@ -21,8 +38,16 @@ class DataBaseController extends GetxController {
       accessList: [
         _firebaseAuth.currentUser!.uid,
       ],
+      authorId: _firebaseAuth.currentUser!.uid,
+      firstDate: now.toIso8601String(),
+      lastdate: lastDate,
+      deleteDate: deleteDate,
     );
     await _firestore.doc("rooms/$roomId").set(roomData.toMap());
+  }
+
+  Future updateRoom(RoomModel roomData) async {
+    await _firestore.doc("rooms/${roomData.roomId}").set(roomData.toMap());
   }
 
   Future<Status> joinRoom(String roomId, String password) async {
@@ -37,7 +62,7 @@ class DataBaseController extends GetxController {
       } else if (!isValid) {
         return Status.denied;
       }
-    } else {
+    } else if (!room.exists) {
       return Status.noRoom;
     }
     return Status.unknown;
