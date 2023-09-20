@@ -1,6 +1,6 @@
 # Swift Storage
 
-![swift-storage-cover]([/assets/cover.png](https://firebasestorage.googleapis.com/v0/b/swift-storage.appspot.com/o/cover.png?alt=media&token=71d0bbc9-dfae-44f6-abbe-90b2ca496933))
+![swift-storage-cover]([https://firebasestorage.googleapis.com/v0/b/swift-storage.appspot.com/o/cover.png?alt=media&token=71d0bbc9-dfae-44f6-abbe-90b2ca496933])
 
 ## Description
 In day-to-day life there is a constant need for small, temporary storage solutions like at xerox centres, transferring documents from your mobile to computer or when you are not carrying your pendrive. Logging onto your Google Drive needs 2 step authentication which is a lengthy process. Swift Storage provides you with a temporary storage for easy and quick document transfer.
