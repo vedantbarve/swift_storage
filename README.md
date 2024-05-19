@@ -31,5 +31,3 @@ On the terminal.
 - [https://firebase.google.com/docs/functions](https://firebase.google.com/docs/functions)
 - [https://medium.com/google-cloud/building-a-slack-reminder-app-with-google-cloud-functions-and-google-cloud-scheduler-4046f4c9c19](https://medium.com/google-cloud/building-a-slack-reminder-app-with-google-cloud-functions-and-google-cloud-scheduler-4046f4c9c19)
 
-## Credits
-[Soaham Pimparkar](https://github.com/soaham-pimparkar)
