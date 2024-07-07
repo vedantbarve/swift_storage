@@ -1,6 +1,3 @@
-# Last modified
-07 July 2024
-
 # Swift Storage
 
 ![swift-storage-cover](https://github.com/vedantbarve/swift_storage/blob/master/assets/cover.png)
@@ -29,6 +26,8 @@ Install [Git](https://git-scm.com/) on your device.
 On the terminal.
 `git clone https://github.com/vedantbarve/swift_storage.git`
 
+## Last modified
+07 July 2024
 ## References
 - [https://cloud.google.com/pubsub/docs/admin#create_a_topic](https://cloud.google.com/pubsub/docs/admin#create_a_topic)
 - [https://firebase.google.com/docs/functions](https://firebase.google.com/docs/functions)
