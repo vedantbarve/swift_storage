@@ -26,10 +26,11 @@ Install [Git](https://git-scm.com/) on your device.
 On the terminal.
 `git clone https://github.com/vedantbarve/swift_storage.git`
 
-## Last modified
-07 July 2024
 ## References
 - [https://cloud.google.com/pubsub/docs/admin#create_a_topic](https://cloud.google.com/pubsub/docs/admin#create_a_topic)
 - [https://firebase.google.com/docs/functions](https://firebase.google.com/docs/functions)
 - [https://medium.com/google-cloud/building-a-slack-reminder-app-with-google-cloud-functions-and-google-cloud-scheduler-4046f4c9c19](https://medium.com/google-cloud/building-a-slack-reminder-app-with-google-cloud-functions-and-google-cloud-scheduler-4046f4c9c19)
+
+## Last modified
+07 July 2024
 
