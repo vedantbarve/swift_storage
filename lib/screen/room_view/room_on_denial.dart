@@ -17,10 +17,10 @@ class RoomOnDenial extends StatelessWidget {
           ),
           title: Text("Room ID : $roomId"),
         ),
-        body: Center(
+        body: const Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: const [
+            children:  [
               Icon(
                 Icons.warning,
                 color: Colors.redAccent,

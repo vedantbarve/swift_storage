@@ -30,11 +30,19 @@ class RoomOnAccess extends StatelessWidget {
         appBar: AppBar(
           title: Text("Room ID : ${_roomCtr.getRoomData.roomId}"),
           leading: BackButton(
+            color: Colors.white,
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (_) {
                   return AlertDialog(
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(
+                          10,
+                        ),
+                      ),
+                    ),
                     actionsPadding: const EdgeInsets.all(14.0),
                     title: const Text(
                       "Are you sure you want to leave this room?",
@@ -42,11 +50,35 @@ class RoomOnAccess extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () => Get.back(),
-                        child: const Text("Back"),
+                        style: ButtonStyle(
+                          shape: WidgetStateProperty.all(
+                            const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          "Back",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                       ElevatedButton(
                         onPressed: () => Get.offAllNamed('/'),
-                        child: const Text("Confirm"),
+                        style: ButtonStyle(
+                          shape: WidgetStateProperty.all(
+                            const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(10),
+                              ),
+                            ),
+                          ),
+                        ),
+                        child: const Text(
+                          "Confirm",
+                          style: TextStyle(color: Colors.black),
+                        ),
                       ),
                     ],
                   );
@@ -77,7 +109,10 @@ class RoomOnAccess extends StatelessWidget {
               },
             );
           },
-          child: const Icon(Icons.add),
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
         body: GetBuilder(
           init: _filesCtr,
@@ -157,16 +192,19 @@ class QrCodeButton extends StatelessWidget {
               height: 200,
               width: 200,
               child: Center(
-                child: QrImage(
-                  size: 200,
+                child: QrImageView(
                   data: url,
+                  size: 200,
                 ),
               ),
             ),
           ),
         );
       },
-      icon: const Icon(Icons.qr_code),
+      icon: const Icon(
+        Icons.qr_code,
+        color: Colors.white,
+      ),
     );
   }
 }
@@ -187,7 +225,10 @@ class CopyToClipBoardButton extends StatelessWidget {
           ),
         );
       },
-      icon: const Icon(Icons.copy),
+      icon: const Icon(
+        Icons.copy,
+        color: Colors.white,
+      ),
     );
   }
 }
@@ -213,9 +254,9 @@ class CustomListTile extends StatelessWidget {
       },
       background: Container(
         color: Colors.redAccent,
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.end,
-          children: const [
+          children: [
             Text(
               "Delete",
               style: TextStyle(

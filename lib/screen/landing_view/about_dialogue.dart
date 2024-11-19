@@ -38,8 +38,8 @@ class AboutDialogue extends StatelessWidget {
             icon: const FaIcon(FontAwesomeIcons.github),
           ),
         ],
-        content: ListTile(
-          title: const Text(
+        content: const ListTile(
+          title: Text(
             "Swift storage is a temporary storage solution for day to day tasks like sharing small documents between devices.",
           ),
           subtitle: SingleChildScrollView(

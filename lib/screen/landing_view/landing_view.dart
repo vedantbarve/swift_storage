@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:swift_storage/global/snackbar.dart';
 import 'package:swift_storage/screen/landing_view/about_dialogue.dart';
@@ -109,6 +110,10 @@ class Header extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              Html(data: """
+ <a href='https://www.free-counters.org/'>https://www.free-counters.org/</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=898a16e739a2424bbd648aca17443e278ac4603a'></script>
+<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1207853/t/0"></script>
+""")
             ],
           ),
         ),
@@ -255,7 +260,10 @@ class _FormWidgetState extends State<FormWidget> {
                   onPressed: onCreateRoomPressed,
                   child: const Text(
                     "Create Room",
-                    style: TextStyle(fontFamily: "Poppins"),
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],
@@ -319,7 +327,8 @@ class _FormWidgetState extends State<FormWidget> {
                   onPressed: onJoinRoomPressed,
                   child: const Text(
                     "Join Room",
-                    style: TextStyle(fontFamily: "Poppins"),
+                    style:
+                        TextStyle(fontFamily: "Poppins", color: Colors.white),
                   ),
                 ),
               ],

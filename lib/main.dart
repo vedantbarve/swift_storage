@@ -57,11 +57,7 @@ class RootWidget extends StatelessWidget {
             padding: MaterialStateProperty.all(
               const EdgeInsets.all(16),
             ),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
+            
           ),
         ),
       ),

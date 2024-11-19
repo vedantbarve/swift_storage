@@ -46,6 +46,7 @@ dependencies:
   qr_flutter: ^4.0.0
   encryptor: ^0.0.1
   font_awesome_flutter: ^10.2.1
+  flutter_html: ^3.0.0-beta.2
 
 dev_dependencies:
   flutter_test:
