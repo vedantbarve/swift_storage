@@ -1,1 +1,59 @@
-{"hosting":{"public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"],"rewrites":[{"source":"**","destination":"/index.html"}]},"functions":[{"source":"functions","codebase":"default","ignore":["node_modules",".git","firebase-debug.log","firebase-debug.*.log"]}],"firestore":{"rules":"firestore.rules","indexes":"firestore.indexes.json"},"storage":{"rules":"storage.rules"},"flutter":{"platforms":{"dart":{"lib/firebase_options.dart":{"projectId":"swift-storage","configurations":{"web":"1:573916257698:web:e7c0767c8c57a6743426fb"}}}}}}
+{
+    "hosting": 
+    {
+        "public": "build/web",
+        "ignore": 
+        [
+            "firebase.json",
+            "**/.*",
+            "**/node_modules/**"
+        ],
+        "rewrites": 
+        [
+            {
+                "source": "**",
+                "destination": "/index.html"
+            }
+        ]
+    },
+    "functions": 
+    [
+        {
+            "source": "functions",
+            "codebase": "default",
+            "ignore": 
+            [
+                "node_modules",
+                ".git",
+                "firebase-debug.log",
+                "firebase-debug.*.log"
+            ]
+        }
+    ],
+    "firestore": 
+    {
+        "rules": "firestore.rules",
+        "indexes": "firestore.indexes.json"
+    },
+    "storage": 
+    {
+        "rules": "storage.rules"
+    },
+    "flutter": 
+    {
+        "platforms": 
+        {
+            "dart": 
+            {
+                "lib/firebase_options.dart": 
+                {
+                    "projectId": "swift-storage",
+                    "configurations": 
+                    {
+                        "web": "1:573916257698:web:e7c0767c8c57a6743426fb"
+                    }
+                }
+            }
+        }
+    }
+}

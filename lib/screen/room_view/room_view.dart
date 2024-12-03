@@ -22,8 +22,8 @@ class RoomView extends StatelessWidget {
             if (snapshot.hasError) {
               return RoomOnError(error: snapshot.error.toString());
             }
-            if (snapshot.hasData) {
-              final status = snapshot.data!;
+            if (snapshot.hasData && snapshot.data != null) {
+              final status = snapshot.data;
               if (status == Status.approved) {
                 return const RoomOnAccess();
               } else if (status == Status.denied) {

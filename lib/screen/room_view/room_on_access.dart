@@ -17,8 +17,8 @@ final _encryptCtr = Get.put(EncryptionController());
 
 class RoomOnAccess extends StatelessWidget {
   const RoomOnAccess({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -93,21 +93,17 @@ class RoomOnAccess extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            await _filesCtr.selectAndUploadFiles().then(
-              (value) {
-                if (value == "roomSize") {
-                  showSnackBar(
-                    context,
+            var value = await _filesCtr.selectAndUploadFiles();
+            if (value == "roomSize") {
+              context.showSnackbar(
+                data:
                     "Size of the room is greater than 50MB\nDelete some files",
-                  );
-                } else if (value == "filesSize") {
-                  showSnackBar(
-                    context,
-                    "Size of the room will greater than 50MB",
-                  );
-                }
-              },
-            );
+              );
+            } else if (value == "filesSize") {
+              context.showSnackbar(
+                data: "Size of the room will greater than 50MB",
+              );
+            }
           },
           child: const Icon(
             Icons.add,
@@ -170,8 +166,8 @@ class RoomOnAccess extends StatelessWidget {
 
 class QrCodeButton extends StatelessWidget {
   const QrCodeButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -211,18 +207,16 @@ class QrCodeButton extends StatelessWidget {
 
 class CopyToClipBoardButton extends StatelessWidget {
   const CopyToClipBoardButton({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: () async {
-        await FlutterClipboard.copy(_roomCtr.getRoomData.roomId).then(
-          (value) => showSnackBar(
-            context,
-            "Room ID copied to clipboard",
-          ),
+        await FlutterClipboard.copy(_roomCtr.getRoomData.roomId);
+        context.showSnackbar(
+          data: "Room ID copied to clipboard",
         );
       },
       icon: const Icon(
@@ -235,9 +229,9 @@ class CopyToClipBoardButton extends StatelessWidget {
 
 class CustomListTile extends StatelessWidget {
   const CustomListTile({
-    Key? key,
+    super.key,
     required this.item,
-  }) : super(key: key);
+  });
 
   final FileModel item;
 

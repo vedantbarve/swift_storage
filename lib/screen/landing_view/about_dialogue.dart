@@ -47,7 +47,7 @@ class AboutDialogue extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
-              children: const [
+              children: [
                 SizedBox(height: 14),
                 Text("Features :"),
                 Text("1. Upto 50MB storage per room."),

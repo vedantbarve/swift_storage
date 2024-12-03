@@ -53,11 +53,10 @@ class RootWidget extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(secondary),
-            padding: MaterialStateProperty.all(
+            backgroundColor: WidgetStateProperty.all(secondary),
+            padding: WidgetStateProperty.all(
               const EdgeInsets.all(16),
             ),
-            
           ),
         ),
       ),

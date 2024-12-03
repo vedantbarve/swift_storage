@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class RoomOnDenial extends StatelessWidget {
-  const RoomOnDenial({Key? key}) : super(key: key);
+  const RoomOnDenial({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class RoomOnDenial extends StatelessWidget {
         body: const Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children:  [
+            children: [
               Icon(
                 Icons.warning,
                 color: Colors.redAccent,

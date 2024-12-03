@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:swift_storage/global/snackbar.dart';
 import 'package:swift_storage/screen/landing_view/about_dialogue.dart';
@@ -71,8 +70,8 @@ class LandingView extends StatelessWidget {
 
 class Header extends StatelessWidget {
   const Header({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -110,10 +109,6 @@ class Header extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Html(data: """
- <a href='https://www.free-counters.org/'>https://www.free-counters.org/</a> <script type='text/javascript' src='https://www.freevisitorcounters.com/auth.php?id=898a16e739a2424bbd648aca17443e278ac4603a'></script>
-<script type="text/javascript" src="https://www.freevisitorcounters.com/en/home/counter/1207853/t/0"></script>
-""")
             ],
           ),
         ),
@@ -157,28 +152,25 @@ class _FormWidgetState extends State<FormWidget> {
               if (data == Status.approved) {
                 Get.offNamed("/room/${_roomIdJoinRoom.text}");
               } else if (data == Status.denied) {
-                showSnackBar(
-                  context,
-                  "Oops! You have entered the wrong password.",
+                context.showSnackbar(
+                  data: "Oops! You have entered the wrong password.",
                   color: Colors.red,
                 );
               } else if (data == Status.noRoom) {
-                showSnackBar(
-                  context,
-                  "No Room found",
+                context.showSnackbar(
+                  data: "No Room found",
                   color: Colors.red,
                 );
               } else if (data == Status.unknown) {
-                showSnackBar(
-                  context,
-                  "Something went wrong",
+                context.showSnackbar(
+                  data: "Something went wrong",
                   color: Colors.red,
                 );
               }
             },
           );
         } catch (err) {
-          showSnackBar(context, err.toString());
+          context.showSnackbar(data: err.toString());
         }
       }
     }
@@ -194,7 +186,7 @@ class _FormWidgetState extends State<FormWidget> {
             },
           );
         } catch (e) {
-          showSnackBar(context, e.toString());
+          context.showSnackbar(data: e.toString());
         }
       }
     }
@@ -251,6 +243,9 @@ class _FormWidgetState extends State<FormWidget> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter a value";
+                    }
+                    if (value.length < 5) {
+                      return "Please create a strong password";
                     }
                     return null;
                   },
@@ -327,8 +322,10 @@ class _FormWidgetState extends State<FormWidget> {
                   onPressed: onJoinRoomPressed,
                   child: const Text(
                     "Join Room",
-                    style:
-                        TextStyle(fontFamily: "Poppins", color: Colors.white),
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ],

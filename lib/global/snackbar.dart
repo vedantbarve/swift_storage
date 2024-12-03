@@ -2,14 +2,13 @@ import 'package:flutter/material.dart';
 
 import 'const.dart';
 
-showSnackBar(
-  BuildContext context,
-  String data, {
-  Duration? duration,
-  Color? color,
-}) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
+extension SnackbarExtension on BuildContext {
+  void showSnackbar({
+    required String data,
+    Duration? duration,
+    Color color = Colors.black,
+  }) {
+    final snackBar = SnackBar(
       backgroundColor: color,
       duration: duration ?? const Duration(seconds: 2),
       content: Text(
@@ -20,8 +19,10 @@ showSnackBar(
           fontWeight: FontWeight.bold,
         ),
       ),
-    ),
-  );
+    );
+
+    ScaffoldMessenger.of(this).showSnackBar(snackBar);
+  }
 }
 
 showUploadingData(BuildContext context) {

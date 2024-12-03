@@ -7,7 +7,7 @@ final _dbCtr = Get.put(DataBaseController());
 
 class RoomOnError extends StatelessWidget {
   final Object? error;
-  const RoomOnError({Key? key, this.error}) : super(key: key);
+  const RoomOnError({super.key, this.error});
 
   @override
   Widget build(BuildContext context) {
@@ -40,12 +40,11 @@ class RoomOnError extends StatelessWidget {
               const SizedBox(height: 14),
               ElevatedButton.icon(
                 onPressed: () async {
-                  await _dbCtr.logError(error).then(
-                        (value) => showSnackBar(
-                          context,
-                          "Thank you for logging this error.\nPlease try again or access the room by password.",
-                        ),
-                      );
+                  await _dbCtr.logError(error);
+                  context.showSnackbar(
+                    data:
+                        "Thank you for logging this error.\nPlease try again or access the room by password.",
+                  );
                 },
                 icon: const Icon(Icons.error),
                 label: const Text("Report error"),
