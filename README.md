@@ -32,5 +32,5 @@ On the terminal.
 - [https://medium.com/google-cloud/building-a-slack-reminder-app-with-google-cloud-functions-and-google-cloud-scheduler-4046f4c9c19](https://medium.com/google-cloud/building-a-slack-reminder-app-with-google-cloud-functions-and-google-cloud-scheduler-4046f4c9c19)
 
 ## Last modified
-07 July 2024
+05 December 2024
 
