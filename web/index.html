@@ -1,72 +1,148 @@
-<!DOCTYPE html><html><head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="$FLUTTER_BASE_HREF" />
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta
+      name="description"
+      content="Swift Storage - A temporary storage solution for file exchange."
+    />
+    <link rel="manifest" href="manifest.json" />
+    <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="favicons/apple-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="favicons/apple-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="favicons/apple-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="favicons/apple-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="favicons/apple-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="favicons/apple-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="favicons/apple-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="favicons/apple-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicons/apple-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="favicons/android-icon-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="favicons/favicon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicons/favicon-16x16.png"
+    />
+    <link rel="stylesheet" type="text/css" href="splash/style.css" />
+    <meta
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+      name="viewport"
+    />
+    <script src="splash/splash.js"></script>
+  </head>
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  <body>
+    <picture id="splash">
+      <source
+        srcset="
+          splash/img/light-1x.png 1x,
+          splash/img/light-2x.png 2x,
+          splash/img/light-3x.png 3x,
+          splash/img/light-4x.png 4x
+        "
+        media="(prefers-color-scheme: light)"
+      />
+      <source
+        srcset="
+          splash/img/dark-1x.png 1x,
+          splash/img/dark-2x.png 2x,
+          splash/img/dark-3x.png 3x,
+          splash/img/dark-4x.png 4x
+        "
+        media="(prefers-color-scheme: dark)"
+      />
+      <img
+        class="center"
+        aria-hidden="true"
+        src="splash/img/light-1x.png"
+        alt=""
+      /> </picture
+    >&gt;
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="web/favicon.ico" />
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-  <link rel="manifest" href="manifest.json">
-  <link rel="apple-touch-icon" sizes="57x57" href="favicons/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="favicons/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="favicons/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="favicons/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="favicons/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="favicons/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="favicons/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="favicons/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="favicons/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="favicons/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicons/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="favicons/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicons/favicon-16x16.png">  <link rel="stylesheet" type="text/css" href="splash/style.css">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-  <script src="splash/splash.js"></script>
-</head><body>  <picture id="splash">
-      <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x" media="(prefers-color-scheme: light)">
-      <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x" media="(prefers-color-scheme: dark)">
-      <img class="center" aria-hidden="true" src="splash/img/light-1x.png" alt="">
-  </picture>&gt;
+    <title>Swift Storage</title>
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="web/favicon.ico">
+    <script>
+      // The value below is injected by flutter build, do not touch.
+      var serviceWorkerVersion = "{{flutter_service_worker_version}}";
+    </script>
+    <!-- This script adds the flutter initialization JS code -->
+    <script src="flutter.js" defer=""></script>
 
-  <title>Swift Storage</title>
-  
-
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer=""></script>
-
-
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        }
-      }).then(function(engineInitializer) {
-        return engineInitializer.initializeEngine();
-      }).then(function(appRunner) {
-        return appRunner.runApp();
+    <script>
+      window.addEventListener("load", function (ev) {
+        // Download main.dart.js
+        _flutter.loader
+          .loadEntrypoint({
+            serviceWorker: {
+              serviceWorkerVersion: serviceWorkerVersion,
+            },
+          })
+          .then(function (engineInitializer) {
+            return engineInitializer.initializeEngine();
+          })
+          .then(function (appRunner) {
+            return appRunner.runApp();
+          });
       });
-    });
-  </script>
-
-
-</body></html>
+    </script>
+  </body>
+</html>

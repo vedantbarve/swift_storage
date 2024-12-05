@@ -36,13 +36,6 @@ class RoomOnAccess extends StatelessWidget {
                 context: context,
                 builder: (_) {
                   return AlertDialog(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(
-                          10,
-                        ),
-                      ),
-                    ),
                     actionsPadding: const EdgeInsets.all(14.0),
                     title: const Text(
                       "Are you sure you want to leave this room?",
@@ -50,37 +43,27 @@ class RoomOnAccess extends StatelessWidget {
                     actions: [
                       TextButton(
                         onPressed: () => Get.back(),
-                        style: ButtonStyle(
-                          shape: WidgetStateProperty.all(
-                            const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
                         child: const Text(
                           "Back",
                           style: TextStyle(color: Colors.black),
                         ),
                       ),
-                      ElevatedButton(
+                      TextButton(
                         onPressed: () => Get.offAllNamed('/'),
-                        style: ButtonStyle(
-                          shape: WidgetStateProperty.all(
-                            const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
-                              ),
-                            ),
-                          ),
-                        ),
-                        child: const Text(
+                        child: Text(
                           "Confirm",
-                          style: TextStyle(color: Colors.black),
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(8.0),
+                      ),
+                    ),
                   );
                 },
               );
@@ -192,6 +175,11 @@ class QrCodeButton extends StatelessWidget {
                   data: url,
                   size: 200,
                 ),
+              ),
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(8.0),
               ),
             ),
           ),

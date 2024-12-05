@@ -170,7 +170,8 @@ class _FormWidgetState extends State<FormWidget> {
             },
           );
         } catch (err) {
-          context.showSnackbar(data: err.toString());
+          context.showSnackbar(
+              data: "Oops something went wrong. Please try again.");
         }
       }
     }
@@ -186,7 +187,8 @@ class _FormWidgetState extends State<FormWidget> {
             },
           );
         } catch (e) {
-          context.showSnackbar(data: e.toString());
+          context.showSnackbar(
+              data: "Oops something went wrong. Please try again.");
         }
       }
     }
@@ -213,7 +215,8 @@ class _FormWidgetState extends State<FormWidget> {
                   ),
                 ),
                 TextFormField(
-                  enabled: false,
+                  enabled: true,
+                  readOnly: true,
                   controller: _roomIdCreateRoom,
                   decoration: const InputDecoration(
                     hintText: "Room ID",
